@@ -1,72 +1,80 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-const { width, height } = Dimensions.get('window');
 
 export default function TimeScreen() {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('../assets/over40.jpg')}
-        style={styles.background}
-        resizeMode="contain" // <<<<< aqui está o ajuste importante
-      >
-        <View style={styles.overlay}>
-          <Text style={styles.title}>Times Disponíveis</Text>
+    <ImageBackground
+      source={require('../assets/over40.jpg')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>Times Disponíveis</Text>
 
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate('BrazucasOver40')}
-          >
-            <Text style={styles.cardText}>⚽ Brazucas Over 40</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    </View>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasOver40')}
+        >
+          <Text style={styles.textoBotao}>⚽ Brazucas Over 40</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasMundialOver40')}
+        >
+          <Text style={styles.textoBotao}>🌍 Brazucas Mundial Over 40</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasMilao')}
+        >
+          <Text style={styles.textoBotao}>🇮🇹 Brazucas Milão</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasFutebolAlegriaBergamo')}
+        >
+          <Text style={styles.textoBotao}>🥳 Futebol Alegria Bergamo</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000', // para evitar espaço vazio fora da imagem
-  },
   background: {
     flex: 1,
+  },
+  container: {
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.3)',
     padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
   },
   title: {
     fontSize: 26,
-    color: '#fff',
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#fff',
+    marginBottom: 30,
+    textShadowColor: '#000',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
   },
-  card: {
-    backgroundColor: '#ffffffcc',
-    padding: 16,
+  botao: {
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    padding: 15,
     borderRadius: 10,
-    width: 250,
+    marginVertical: 10,
+    width: '100%',
     alignItems: 'center',
   },
-  cardText: {
-    fontSize: 18,
+  textoBotao: {
+    fontSize: 16,
     color: '#000',
     fontWeight: 'bold',
   },
