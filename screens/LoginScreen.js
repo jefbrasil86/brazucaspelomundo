@@ -15,7 +15,7 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 export default function LoginScreen() {
-    const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 const navigation = useNavigation();
 
@@ -46,11 +46,11 @@ const navigation = useNavigation();
 placeholder="Email"
           placeholderTextColor="#555"
             style={styles.input}
-                        onChangeText={setEmail}
+            onChangeText={setEmail}
 value={email}
           />
           <TextInput
-                        placeholder="Senha"
+            placeholder="Senha"
             placeholderTextColor="#555"
             secureTextEntry
             style={styles.input}
@@ -96,9 +96,19 @@ fontWeight: '600',
         borderWidth: 1,
     borderColor: '#ccc',
         borderRadius: 8,
-  padding: 10,
-    marginBottom: 10,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    padding: 10,
+    marginBottom: 12,
+  },
+  button: {
+    backgroundColor: '#FFD700',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 6,
+    marginTop: 10,
+  },
+  buttonText: {
     color: '#000',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
