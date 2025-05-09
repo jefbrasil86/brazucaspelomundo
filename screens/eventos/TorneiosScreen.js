@@ -1,22 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, ScrollView } from 'react-native';
 
 export default function TorneiosScreen() {
   return (
     <ImageBackground
-      source={require('../../assets/torneios.jpg')}
+      source={require('../../assets/torneios.jpg')} // Caminho atualizado corretamente
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.overlay}>
-        <Text style={styles.titulo}>Torneios</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.titulo}>🏆 Torneios</Text>
 
         <View style={styles.card}>
-          <Text style={styles.nome}>🏆 Brazucas Alegria e Ousadia</Text>
-          <Text style={styles.info}>📅 Início: 26/05/2025</Text>
-          <Text style={styles.info}>🎲 Sorteio dos jogos: a definir</Text>
+          <Text style={styles.nome}>Torneio: Alegria e Ousadia</Text>
+          <Text style={styles.detalhes}>📅 Início: 26/05/2025</Text>
+          <Text style={styles.detalhes}>⚽ Time: Brazucas Alegria</Text>
+          <Text style={styles.detalhes}>🔀 Sorteio dos jogos: a definir</Text>
         </View>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 }
@@ -25,33 +26,33 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+  container: {
     padding: 20,
-    justifyContent: 'center',
   },
   titulo: {
-    fontSize: 28,
-    color: '#FFD700',
+    fontSize: 24,
+    color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+    borderRadius: 8,
   },
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    padding: 15,
+    borderRadius: 10,
   },
   nome: {
-    fontSize: 20,
+    fontSize: 18,
+    color: '#FFD700',
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#000',
   },
-  info: {
-    fontSize: 16,
-    color: '#333',
+  detalhes: {
+    fontSize: 14,
+    color: '#fff',
+    marginBottom: 4,
   },
 });
