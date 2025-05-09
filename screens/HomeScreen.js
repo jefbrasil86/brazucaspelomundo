@@ -1,36 +1,30 @@
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, ImageBackground, Animated, Text } from 'react-native';
+// screens/HomeScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 
-export default function HomeScreen() {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 2000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 2000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, [fadeAnim]);
-
+export default function HomeScreen({ navigation }) {
   return (
     <ImageBackground
       source={require('../assets/home-bg.jpg')}
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.overlay}>
-        <Animated.Text style={[styles.texto, { opacity: fadeAnim }]}>
-          Bem-vindo ao Brazucas pelo Mundo!
-        </Animated.Text>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Agenda')}>
+          <Text style={styles.texto}>📅 Agenda de Jogos</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('EventosBergamo')}>
+          <Text style={styles.texto}>🎉 Eventos em Bergamo</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('EventosMilao')}>
+          <Text style={styles.texto}>🎭 Eventos em Milão</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('EventosRoma')}>
+          <Text style={styles.texto}>🎨 Eventos em Roma</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -41,20 +35,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    margin: 20,
-    padding: 20,
-    borderRadius: 10,
+  container: {
+    alignItems: 'center',
+    gap: 20,
+    paddingHorizontal: 20,
+  },
+  card: {
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    width: '100%',
     alignItems: 'center',
   },
   texto: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFD700', // dourado
-    textShadowColor: '#000',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-    textAlign: 'center',
+    color: '#000',
   },
 });

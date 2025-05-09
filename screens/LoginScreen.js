@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View,
-  TextInput,
+    TextInput,
   Button,
   Text,
   StyleSheet,
@@ -15,9 +15,9 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const navigation = useNavigation();
+const navigation = useNavigation();
 
   const fazerLogin = () => {
     if (email && senha) {
@@ -35,31 +35,31 @@ export default function LoginScreen() {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <Image
-        source={require('../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      source={require('../assets/logo.png')}
+      style={styles.logo}
+      resizeMode="contain"
+    />
 
       <BlurView intensity={40} tint="light" style={styles.container}>
-        <Text style={styles.title}>Login</Text>
-        <TextInput
-          placeholder="Email"
+          <Text style={styles.title}>Login</Text>
+          <TextInput
+placeholder="Email"
           placeholderTextColor="#555"
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-        />
-        <TextInput
-          placeholder="Senha"
-          placeholderTextColor="#555"
-          secureTextEntry
-          style={styles.input}
-          onChangeText={setSenha}
-          value={senha}
-        />
-        <Button title="Entrar" onPress={fazerLogin} />
-      </BlurView>
-    </ScrollView>
+            style={styles.input}
+                        onChangeText={setEmail}
+value={email}
+          />
+          <TextInput
+                        placeholder="Senha"
+            placeholderTextColor="#555"
+            secureTextEntry
+            style={styles.input}
+            onChangeText={setSenha}
+value={senha}
+          />
+          <Button title="Entrar" onPress={fazerLogin} />
+          </BlurView>
+      </ScrollView>
   );
 }
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     backgroundColor: '#000',
-    paddingVertical: 40,
+  paddingVertical: 40,
   },
   logo: {
     width: width * 0.9,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     borderRadius: 12,
-    width: width * 0.68,
+width: width * 0.68,
     alignItems: 'stretch',
     overflow: 'hidden',
     backgroundColor: 'rgba(255, 255, 255, 0.15)', // mais translúcido
@@ -90,13 +90,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 12,
     color: '#000',
-    fontWeight: '600',
+fontWeight: '600',
   },
   input: {
-    borderWidth: 1,
+        borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
+        borderRadius: 8,
+  padding: 10,
     marginBottom: 10,
     backgroundColor: 'rgba(255,255,255,0.3)',
     color: '#000',
