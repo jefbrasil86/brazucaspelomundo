@@ -20,6 +20,10 @@ import BrazucasFutebolAlegriaBergamoScreen from '../screens/times/BrazucasFutebo
 import AgendaScreen from '../screens/eventos/AgendaScreen';
 import EventosBergamoScreen from '../screens/eventos/EventosBergamoScreen';
 import EventosMilaoScreen from '../screens/eventos/EventosMilaoScreen';
+import EventosRomaScreen from '../screens/eventos/EventosRomaScreen';
+
+// Tela de torneios
+import TorneiosScreen from '../screens/eventos/TorneiosScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +51,10 @@ export default function AuthStack() {
       <Stack.Screen name="Agenda" component={AgendaScreen} />
       <Stack.Screen name="EventosBergamo" component={EventosBergamoScreen} />
       <Stack.Screen name="EventosMilao" component={EventosMilaoScreen} />
+      <Stack.Screen name="EventosRoma" component={EventosRomaScreen} />
+
+      {/* Torneios */}
+      <Stack.Screen name="Torneios" component={TorneiosScreen} />
     </Stack.Navigator>
   );
 }
