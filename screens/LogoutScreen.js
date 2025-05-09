@@ -1,31 +1,30 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, ImageBackground, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function LogoutScreen({ navigation }) {
-  const voltarParaLogin = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
+export default function LogoutScreen() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    // Função que simula logout após 1 segundo
+    const timeout = setTimeout(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <ImageBackground
-      source={require('../assets/sair.jpg')}
+      source={require('../assets/logo.png')} // ou qualquer imagem que você queira usar
       style={styles.background}
-      resizeMode="cover"
+      resizeMode="contain" // evita cortes e deixa a imagem ajustada
     >
       <View style={styles.overlay}>
-        <Text style={styles.text}>Você saiu do app</Text>
-        <TouchableOpacity style={styles.button} onPress={voltarParaLogin}>
-          <Text style={styles.buttonText}>Voltar para o Login</Text>
-        </TouchableOpacity>
+        <Text style={styles.text}>Você saiu com sucesso.</Text>
       </View>
     </ImageBackground>
   );
@@ -36,29 +35,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#000',
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    padding: 30,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    padding: 20,
     borderRadius: 12,
-    alignItems: 'center',
   },
   text: {
-    fontSize: 22,
     color: '#fff',
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 20,
     textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
     fontWeight: 'bold',
   },
 });

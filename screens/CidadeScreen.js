@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,27 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function CidadeScreen({ navigation }) {
+  const animRef = useRef(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (animRef.current) {
+        animRef.current.fadeInUp(800);
+      }
+    }, [])
+  );
+
   return (
     <ImageBackground
       source={require('../assets/italia.jpg')}
       style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.container}>
+      <Animatable.View ref={animRef} style={styles.container}>
         <TouchableOpacity
           style={styles.card}
           onPress={() => navigation.navigate('Roma')}
@@ -59,7 +71,7 @@ export default function CidadeScreen({ navigation }) {
             </View>
           </ImageBackground>
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
     </ImageBackground>
   );
 }
@@ -78,7 +90,7 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: 16,
     width: '80%',
-    height: 100, // 🔽 menor altura para mostrar mais fundo
+    height: 100,
     borderRadius: 12,
     overflow: 'hidden',
   },

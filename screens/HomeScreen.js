@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Text,
+  TouchableOpacity,
   StyleSheet,
   ImageBackground,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const fadeRef = useRef(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (fadeRef.current) {
+        fadeRef.current.fadeInUp(800);
+      }
+    }, [])
+  );
 
   return (
     <ImageBackground
@@ -18,42 +28,25 @@ export default function HomeScreen() {
       style={styles.background}
       resizeMode="cover"
     >
-      <ScrollView contentContainerStyle={styles.container}>
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('Agenda')}
-        >
-          <Text style={styles.texto}>📅 Agenda de Jogos</Text>
-        </TouchableOpacity>
+      <Animatable.View ref={fadeRef} style={styles.container}>
+        <Text style={styles.title}>Tabs</Text>
 
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('EventosBergamo')}
-        >
-          <Text style={styles.texto}>🎉 Eventos em Bergamo</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('EventosMilao')}
-        >
-          <Text style={styles.texto}>🧍 Eventos em Milão</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('EventosRoma')}
-        >
-          <Text style={styles.texto}>🎨 Eventos em Roma</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('Torneios')}
-        >
-          <Text style={styles.texto}>🏆 Torneios</Text>
-        </TouchableOpacity>
-      </ScrollView>
+        {[
+          { label: '📅 Agenda de Jogos', screen: 'Agenda' },
+          { label: '🎉 Eventos em Bergamo', screen: 'EventosBergamo' },
+          { label: '🗽 Eventos em Milão', screen: 'EventosMilao' },
+          { label: '🎨 Eventos em Roma', screen: 'EventosRoma' },
+          { label: '🏆 Torneios', screen: 'Torneios' },
+        ].map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.card}
+            onPress={() => navigation.navigate(item.screen)}
+          >
+            <Text style={styles.texto}>{item.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </Animatable.View>
     </ImageBackground>
   );
 }
@@ -61,21 +54,30 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    justifyContent: 'center',
   },
   container: {
-    padding: 20,
+    alignItems: 'center',
     paddingTop: 80,
+    paddingBottom: 40,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 30,
   },
   card: {
-    backgroundColor: 'rgba(0,0,0,0.6)', // Preto translúcido
-    padding: 20,
-    marginBottom: 20,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    width: 300,
     borderRadius: 12,
+    padding: 16,
+    marginBottom: 20,
     alignItems: 'center',
   },
   texto: {
+    color: 'white',
     fontSize: 18,
-    color: '#fff',
     fontWeight: 'bold',
   },
 });

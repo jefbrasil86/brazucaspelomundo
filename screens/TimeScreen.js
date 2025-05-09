@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 
 export default function TimeScreen() {
   const navigation = useNavigation();
+  const fadeRef = useRef(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (fadeRef.current) {
+        fadeRef.current.fadeInUp(800);
+      }
+    }, [])
+  );
 
   return (
     <ImageBackground
@@ -12,35 +22,37 @@ export default function TimeScreen() {
       resizeMode="cover"
     >
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Times Disponíveis</Text>
+        <Animatable.View ref={fadeRef} style={styles.inner}>
+          <Text style={styles.title}>Times Disponíveis</Text>
 
-        <TouchableOpacity
-          style={styles.botao}
-          onPress={() => navigation.navigate('BrazucasOver40')}
-        >
-          <Text style={styles.textoBotao}>⚽ Brazucas Over 40</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.botao}
+            onPress={() => navigation.navigate('BrazucasOver40')}
+          >
+            <Text style={styles.textoBotao}>⚽ Brazucas Over 40</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.botao}
-          onPress={() => navigation.navigate('BrazucasMundialOver40')}
-        >
-          <Text style={styles.textoBotao}>🌍 Brazucas Mundial Over 40</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.botao}
+            onPress={() => navigation.navigate('BrazucasMundialOver40')}
+          >
+            <Text style={styles.textoBotao}>🌍 Brazucas Mundial Over 40</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.botao}
-          onPress={() => navigation.navigate('BrazucasMilao')}
-        >
-          <Text style={styles.textoBotao}>🇮🇹 Brazucas Milão</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.botao}
+            onPress={() => navigation.navigate('BrazucasMilao')}
+          >
+            <Text style={styles.textoBotao}>🇮🇹 Brazucas Milão</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.botao}
-          onPress={() => navigation.navigate('BrazucasFutebolAlegriaBergamo')}
-        >
-          <Text style={styles.textoBotao}>🥳 Futebol Alegria Bergamo</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.botao}
+            onPress={() => navigation.navigate('BrazucasFutebolAlegriaBergamo')}
+          >
+            <Text style={styles.textoBotao}>🥳 Futebol Alegria Bergamo</Text>
+          </TouchableOpacity>
+        </Animatable.View>
       </ScrollView>
     </ImageBackground>
   );
@@ -52,9 +64,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flexGrow: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+  },
+  inner: {
+    alignItems: 'center',
   },
   title: {
     fontSize: 26,
