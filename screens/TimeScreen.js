@@ -1,59 +1,51 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import * as Animatable from 'react-native-animatable';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TimeScreen() {
   const navigation = useNavigation();
-  const fadeRef = useRef(null);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      if (fadeRef.current) {
-        fadeRef.current.fadeInUp(800);
-      }
-    }, [])
-  );
 
   return (
     <ImageBackground
-      source={require('../assets/over40.jpg')}
+      source={require('../assets/times.jpg')}
       style={styles.background}
-      resizeMode="cover"
     >
-      <ScrollView contentContainerStyle={styles.container}>
-        <Animatable.View ref={fadeRef} style={styles.inner}>
-          <Text style={styles.title}>Times Disponíveis</Text>
+      <View style={styles.container}>
+        <Text style={styles.titulo}>Times Disponíveis</Text>
 
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={() => navigation.navigate('BrazucasOver40')}
-          >
-            <Text style={styles.textoBotao}>⚽ Brazucas Over 40</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasOver40')}
+        >
+          <Ionicons name="people-outline" size={20} color="#000" style={styles.icone} />
+          <Text style={styles.texto}>Brazucas Over 40</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={() => navigation.navigate('BrazucasMundialOver40')}
-          >
-            <Text style={styles.textoBotao}>🌍 Brazucas Mundial Over 40</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasMundialOver40')}
+        >
+          <Ionicons name="globe-outline" size={20} color="#000" style={styles.icone} />
+          <Text style={styles.texto}>Brazucas Mundial Over 40</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={() => navigation.navigate('BrazucasMilao')}
-          >
-            <Text style={styles.textoBotao}>🇮🇹 Brazucas Milão</Text>
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('BrazucasMilao')}
+        >
+          <Ionicons name="flag-outline" size={20} color="#000" style={styles.icone} />
+          <Text style={styles.texto}>🇮🇹 Brazucas Milão</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={() => navigation.navigate('BrazucasFutebolAlegriaBergamo')}
-          >
-            <Text style={styles.textoBotao}>🥳 Futebol Alegria Bergamo</Text>
-          </TouchableOpacity>
-        </Animatable.View>
-      </ScrollView>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('AlegriaBergamo')}
+        >
+          <Ionicons name="happy-outline" size={20} color="#000" style={styles.icone} />
+          <Text style={styles.texto}>🥳 Futebol Alegria Bergamo</Text>
+        </TouchableOpacity>
+      </View>
     </ImageBackground>
   );
 }
@@ -61,35 +53,35 @@ export default function TimeScreen() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    resizeMode: 'cover',
   },
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 20,
+    flex: 1,
+    paddingTop: 60,
+    paddingHorizontal: 20,
   },
-  inner: {
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 26,
+  titulo: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 30,
-    textShadowColor: '#000',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#000',
   },
   botao: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: '#fff',
     padding: 15,
-    borderRadius: 10,
-    marginVertical: 10,
-    width: '100%',
+    borderRadius: 12,
+    marginBottom: 15,
+    flexDirection: 'row',
     alignItems: 'center',
+    elevation: 3,
   },
-  textoBotao: {
+  texto: {
     fontSize: 16,
-    color: '#000',
     fontWeight: 'bold',
+    color: '#000',
+  },
+  icone: {
+    marginRight: 10,
   },
 });

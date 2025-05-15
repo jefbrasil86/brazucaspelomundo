@@ -10,7 +10,7 @@ export default function AdminScreen() {
     >
       <View style={styles.overlay}>
         <Text style={styles.title}>Área de Administração</Text>
-        <Text style={styles.subtitle}>Gerencie pagamentos, prêmios e mais</Text>
+        <Text style={styles.subtitle}>Gerencie os dados do app aqui</Text>
       </View>
     </ImageBackground>
   );
@@ -23,20 +23,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // escurece o fundo para melhor leitura
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center',
   },
   title: {
-    color: '#FFD700', // dourado
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#fff',
+    textAlign: 'center',
   },
   subtitle: {
+    fontSize: 18,
     color: '#fff',
-    fontSize: 16,
     textAlign: 'center',
+    marginTop: 10,
   },
 });

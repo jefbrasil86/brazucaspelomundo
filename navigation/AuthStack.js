@@ -1,40 +1,34 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
-// Telas principais
 import LoginScreen from '../screens/LoginScreen';
-import TabsNavigator from './TabsNavigator';
+import TabsNavigator from '../screens/TabsNavigator';
 
-// Telas das cidades
+// Cidades
 import RomaScreen from '../screens/cidades/RomaScreen';
 import MilaoScreen from '../screens/cidades/MilaoScreen';
 import BergamoScreen from '../screens/cidades/BergamoScreen';
 
-// Telas dos times
+// Times
 import BrazucasOver40Screen from '../screens/times/BrazucasOver40Screen';
 import BrazucasMundialOver40Screen from '../screens/times/BrazucasMundialOver40Screen';
 import BrazucasMilaoScreen from '../screens/times/BrazucasMilaoScreen';
 import BrazucasFutebolAlegriaBergamoScreen from '../screens/times/BrazucasFutebolAlegriaBergamoScreen';
 
-// Telas de eventos
+// Eventos
 import AgendaScreen from '../screens/eventos/AgendaScreen';
 import EventosBergamoScreen from '../screens/eventos/EventosBergamoScreen';
 import EventosMilaoScreen from '../screens/eventos/EventosMilaoScreen';
 import EventosRomaScreen from '../screens/eventos/EventosRomaScreen';
-
-// Tela de torneios
 import TorneiosScreen from '../screens/eventos/TorneiosScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function AuthStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: true }}>
-      {/* Login */}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
-
-      {/* Navegação principal com Tabs */}
-      <Stack.Screen name="Tabs" component={TabsNavigator} />
+      <Stack.Screen name="Home" component={TabsNavigator} />
 
       {/* Cidades */}
       <Stack.Screen name="Roma" component={RomaScreen} />
@@ -45,15 +39,13 @@ export default function AuthStack() {
       <Stack.Screen name="BrazucasOver40" component={BrazucasOver40Screen} />
       <Stack.Screen name="BrazucasMundialOver40" component={BrazucasMundialOver40Screen} />
       <Stack.Screen name="BrazucasMilao" component={BrazucasMilaoScreen} />
-      <Stack.Screen name="BrazucasFutebolAlegriaBergamo" component={BrazucasFutebolAlegriaBergamoScreen} />
+      <Stack.Screen name="AlegriaBergamo" component={BrazucasFutebolAlegriaBergamoScreen} />
 
-      {/* Agenda e Eventos */}
+      {/* Eventos */}
       <Stack.Screen name="Agenda" component={AgendaScreen} />
       <Stack.Screen name="EventosBergamo" component={EventosBergamoScreen} />
       <Stack.Screen name="EventosMilao" component={EventosMilaoScreen} />
       <Stack.Screen name="EventosRoma" component={EventosRomaScreen} />
-
-      {/* Torneios */}
       <Stack.Screen name="Torneios" component={TorneiosScreen} />
     </Stack.Navigator>
   );

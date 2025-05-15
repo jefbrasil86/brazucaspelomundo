@@ -1,143 +1,173 @@
 import React, { useState } from 'react';
 import {
-  View, Text, FlatList, TextInput,
-  Modal, TouchableOpacity, StyleSheet, Dimensions
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Modal,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-const { width } = Dimensions.get('window');
+const initialJogadores = [
+  { id: '1', nome: 'Jeferson Arnaldo Pavore', nascimento: '29-03-1983', foto: require('../../assets/jeferson.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '2', nome: 'Matheus Fernandes', nascimento: '02-11-1995', foto: require('../../assets/fernandesnatheus.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '3', nome: 'Rodolfo Fernando Lirio', nascimento: '14-03-1988', foto: require('../../assets/rodolfo.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '4', nome: 'Alexsander Almeida Monteiro', nascimento: '27-03-1995', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '5', nome: 'Marcos Vinícius da Silva Pereira', nascimento: '27-11-1991', foto: require('../../assets/marcosvinicius.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '6', nome: 'Ryan Carlos Costa e Silva', nascimento: '11-11-2001', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '7', nome: 'Fabio Gama', nascimento: '19-04-1982', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '8', nome: 'Lucas Ceron', nascimento: '16-02-1998', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '9', nome: 'Mateus Casotti', nascimento: '25-08-1996', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '10', nome: 'Pedro Bordin', nascimento: '08-01-1985', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '11', nome: 'Adrian Ricardo Villarreal Figueroa', nascimento: '02-08-1988', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '12', nome: 'Ruan Carvalho', nascimento: '27-07-2000', foto: require('../../assets/ruan.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '13', nome: 'Yago Matheus Rocha', nascimento: '12-01-1992', foto: require('../../assets/yago.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '14', nome: 'David Willian Mendonça', nascimento: '04-03-1990', foto: null, posicao: '', cidade: '', video: '' },
+  { id: '15', nome: 'Adam Carvalho Rosas', nascimento: '25-12-2005', foto: require('../../assets/adan.jpeg'), posicao: '', cidade: '', video: '' },
+  { id: '16', nome: 'Rafael Barbosa', nascimento: '14-03-1989', foto: require('../../assets/rafael.jpeg'), posicao: '', cidade: '', video: '' },
+];
 
 export default function BrazucasFutebolAlegriaBergamoScreen() {
-  const [jogadores, setJogadores] = useState([
-    { id: 1, nome: 'Jogador1', sobrenome: 'Bergamo', idade: 30, cidade: 'Bergamo', posicao: 'Goleiro', nota: 6.5 },
-    { id: 2, nome: 'Jogador2', sobrenome: 'Bergamo', idade: 26, cidade: 'Bergamo', posicao: 'Atacante', nota: 7.8 },
-    // ... até 22 jogadores se desejar adicionar
-  ]);
-  const [selecionado, setSelecionado] = useState(null);
+  const [jogadores, setJogadores] = useState(initialJogadores);
   const [modalVisible, setModalVisible] = useState(false);
+  const [jogadorSelecionado, setJogadorSelecionado] = useState(null);
 
-  const editar = (jogador) => {
-    setSelecionado(jogador);
+  const editarJogador = (jogador) => {
+    setJogadorSelecionado(jogador);
     setModalVisible(true);
   };
 
-  const salvar = () => {
-    const atualizados = jogadores.map((j) =>
-      j.id === selecionado.id ? selecionado : j
+  const salvarEdicao = () => {
+    setJogadores((prev) =>
+      prev.map((j) => (j.id === jogadorSelecionado.id ? jogadorSelecionado : j))
     );
-    setJogadores(atualizados);
     setModalVisible(false);
   };
 
+  const escolherFoto = async () => {
+    let resultado = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images });
+    if (!resultado.canceled) {
+      setJogadorSelecionado({ ...jogadorSelecionado, foto: { uri: resultado.assets[0].uri } });
+    }
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.card} onPress={() => editarJogador(item)}>
+      {item.foto && <Image source={item.foto} style={styles.foto} />}
+      <View>
+        <Text style={styles.nome}>{item.nome}</Text>
+        <Text style={styles.nascimento}>Nascimento: {item.nascimento}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Time Brazucas Futebol e Alegria Bergamo</Text>
+    <ImageBackground
+      source={require('../../assets/alegria-bg.jpg')}
+      style={styles.background}
+      resizeMode="cover"
+      imageStyle={{ opacity: 0.15 }}
+    >
       <FlatList
         data={jogadores}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.nome}>{item.nome} {item.sobrenome}</Text>
-            <Text style={styles.info}>Posição: {item.posicao}</Text>
-            <Text style={styles.info}>Idade: {item.idade} • Nota: {item.nota}</Text>
-            <Text style={styles.info}>Cidade: {item.cidade}</Text>
-            <TouchableOpacity style={styles.botao} onPress={() => editar(item)}>
-              <Text style={styles.botaoTexto}>Editar</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.lista}
       />
 
-      <Modal visible={modalVisible} transparent animationType="slide">
+      <Modal visible={modalVisible} animationType="slide">
         <View style={styles.modalContainer}>
-          <View style={styles.modal}>
-            <Text style={styles.modalTitle}>Editar Jogador</Text>
-            <TextInput style={styles.input} value={selecionado?.nome} onChangeText={(t) => setSelecionado({ ...selecionado, nome: t })} placeholder="Nome" />
-            <TextInput style={styles.input} value={selecionado?.idade.toString()} onChangeText={(t) => setSelecionado({ ...selecionado, idade: parseInt(t) || 0 })} placeholder="Idade" keyboardType="numeric" />
-            <TextInput style={styles.input} value={selecionado?.posicao} onChangeText={(t) => setSelecionado({ ...selecionado, posicao: t })} placeholder="Posição" />
-            <TextInput style={styles.input} value={selecionado?.cidade} onChangeText={(t) => setSelecionado({ ...selecionado, cidade: t })} placeholder="Cidade" />
-            <TextInput style={styles.input} value={selecionado?.nota.toString()} onChangeText={(t) => setSelecionado({ ...selecionado, nota: parseFloat(t) || 0 })} placeholder="Nota" keyboardType="numeric" />
-            <TouchableOpacity style={styles.botaoSalvar} onPress={salvar}>
-              <Text style={styles.botaoTexto}>Salvar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={{ textAlign: 'center', marginTop: 10, color: 'red' }}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
+          <TextInput
+            style={styles.input}
+            value={jogadorSelecionado?.posicao}
+            placeholder="Posição"
+            onChangeText={(text) => setJogadorSelecionado({ ...jogadorSelecionado, posicao: text })}
+          />
+          <TextInput
+            style={styles.input}
+            value={jogadorSelecionado?.cidade}
+            placeholder="Cidade"
+            onChangeText={(text) => setJogadorSelecionado({ ...jogadorSelecionado, cidade: text })}
+          />
+          <TextInput
+            style={styles.input}
+            value={jogadorSelecionado?.video}
+            placeholder="Link do vídeo"
+            onChangeText={(text) => setJogadorSelecionado({ ...jogadorSelecionado, video: text })}
+          />
+          <TouchableOpacity style={styles.botaoFoto} onPress={escolherFoto}>
+            <Text style={styles.textoBotao}>Selecionar Foto</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.botaoSalvar} onPress={salvarEdicao}>
+            <Text style={styles.textoBotao}>Salvar</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: '#000',
-    paddingTop: 40,
   },
-  title: {
-    fontSize: 22,
-    color: '#FFD700',
-    textAlign: 'center',
-    marginBottom: 16,
-    fontWeight: 'bold',
+  lista: {
+    padding: 16,
   },
   card: {
-    backgroundColor: '#111',
-    margin: 10,
-    borderRadius: 10,
-    padding: 10,
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  foto: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 12,
   },
   nome: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
   },
-  info: {
-    color: '#ccc',
+  nascimento: {
     fontSize: 14,
-  },
-  botao: {
-    marginTop: 5,
-    backgroundColor: '#FFD700',
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
-  },
-  botaoTexto: {
-    fontWeight: 'bold',
-    color: '#000',
+    color: '#555',
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: '#000000aa',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
     padding: 20,
-    width: width * 0.8,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    textAlign: 'center',
+    backgroundColor: '#fff',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    marginBottom: 10,
     padding: 10,
+    marginBottom: 10,
+  },
+  botaoFoto: {
+    backgroundColor: '#666',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
   },
   botaoSalvar: {
     backgroundColor: '#000',
     padding: 12,
     borderRadius: 8,
+    alignItems: 'center',
+  },
+  textoBotao: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });

@@ -1,114 +1,60 @@
-import React, { useState } from 'react';
-import {
-  View,
-    TextInput,
-  Button,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
-
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-const navigation = useNavigation();
-
-  const fazerLogin = () => {
-    if (email && senha) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'Tabs' }],
-        })
-      );
-    } else {
-      alert('Preencha e-mail e senha');
-    }
-  };
-
+export default function LoginScreen({ navigation }) {
   return (
-    <ScrollView contentContainerStyle={styles.scroll}>
-      <Image
-      source={require('../assets/logo.png')}
-      style={styles.logo}
-      resizeMode="contain"
-    />
+    <ImageBackground
+      source={require('../assets/logo.png')} // Substitua por sua imagem ou background
+      style={styles.background}
+    >
+      <BlurView intensity={50} tint="dark" style={styles.blur}>
+        <Text style={styles.titulo}>Brazucas Pelo Mundo</Text>
 
-      <BlurView intensity={40} tint="light" style={styles.container}>
-          <Text style={styles.title}>Login</Text>
-          <TextInput
-placeholder="Email"
-          placeholderTextColor="#555"
-            style={styles.input}
-            onChangeText={setEmail}
-value={email}
-          />
-          <TextInput
-            placeholder="Senha"
-            placeholderTextColor="#555"
-            secureTextEntry
-            style={styles.input}
-            onChangeText={setSenha}
-value={senha}
-          />
-          <Button title="Entrar" onPress={fazerLogin} />
-          </BlurView>
-      </ScrollView>
+        <TouchableOpacity
+          style={styles.botao}
+          onPress={() => navigation.navigate('Home')} // CORRIGIDO AQUI
+        >
+          <Ionicons name="enter-outline" size={24} color="#fff" style={{ marginRight: 8 }} />
+          <Text style={styles.textoBotao}>Entrar</Text>
+        </TouchableOpacity>
+      </BlurView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: {
-    flexGrow: 1,
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  blur: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
-  paddingVertical: 40,
+    paddingHorizontal: 30,
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
-  logo: {
-    width: width * 0.9,
-    height: width * 1.3,
-    marginBottom: -120,
-  },
-  container: {
-    padding: 16,
-    borderRadius: 12,
-width: width * 0.68,
-    alignItems: 'stretch',
-    overflow: 'hidden',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)', // mais translúcido
-    borderWidth: 1,
-    borderColor: '#ffffff33',
-  },
-  title: {
-    fontSize: 24,
+  titulo: {
+    fontSize: 30,
+    color: '#fff',
+    fontWeight: 'bold',
+    marginBottom: 50,
     textAlign: 'center',
-    marginBottom: 12,
-    color: '#000',
-fontWeight: '600',
   },
-  input: {
-        borderWidth: 1,
-    borderColor: '#ccc',
-        borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
-  },
-  button: {
+  botao: {
+    flexDirection: 'row',
     backgroundColor: '#FFD700',
     paddingVertical: 12,
     paddingHorizontal: 25,
-    borderRadius: 6,
-    marginTop: 10,
+    borderRadius: 25,
+    alignItems: 'center',
   },
-  buttonText: {
+  textoBotao: {
+    fontSize: 18,
     color: '#000',
     fontWeight: 'bold',
-    fontSize: 16,
   },
 });
