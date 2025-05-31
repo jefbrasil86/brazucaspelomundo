@@ -1,67 +1,118 @@
 import React, { useState } from 'react';
 import {
-  View, Text, FlatList, TextInput,
-  Modal, TouchableOpacity, StyleSheet, Dimensions
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TextInput,
+  Modal,
+  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
+import jogadoresOriginais from '../../data/jogadores';
 
 const { width } = Dimensions.get('window');
 
 export default function BrazucasMundialOver40Screen() {
-  const [jogadores, setJogadores] = useState([
-    { id: 1, nome: 'Jogador1', sobrenome: 'Mundial', idade: 28, cidade: 'Bergamo', posicao: 'Atacante', nota: 7.5 },
-    { id: 2, nome: 'Jogador2', sobrenome: 'Mundial', idade: 25, cidade: 'Bergamo', posicao: 'Meio-Campo', nota: 8.0 },
-    // ...até 22 jogadores
-  ]);
-  const [selecionado, setSelecionado] = useState(null);
+  const [jogadores, setJogadores] = useState(jogadoresOriginais);
+  const [jogadorSelecionado, setJogadorSelecionado] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const editar = (jogador) => {
-    setSelecionado(jogador);
+  const abrirModal = (jogador) => {
+    setJogadorSelecionado(jogador);
     setModalVisible(true);
   };
 
-  const salvar = () => {
-    const atualizados = jogadores.map(j =>
-      j.id === selecionado.id ? selecionado : j
+  const salvarAlteracoes = () => {
+    const novosJogadores = jogadores.map((j) =>
+      j.id === jogadorSelecionado.id ? jogadorSelecionado : j
     );
-    setJogadores(atualizados);
+    setJogadores(novosJogadores);
     setModalVisible(false);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Time Brazucas Mundial Over 40</Text>
+      <Text style={styles.title}>Brazucas Mundial Over 40</Text>
+
       <FlatList
         data={jogadores}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.list}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={styles.nome}>{item.nome} {item.sobrenome}</Text>
-            <Text style={styles.info}>Posição: {item.posicao}</Text>
-            <Text style={styles.info}>Idade: {item.idade} • Nota: {item.nota}</Text>
-            <Text style={styles.info}>Cidade: {item.cidade}</Text>
-            <TouchableOpacity style={styles.botao} onPress={() => editar(item)}>
-              <Text style={styles.botaoTexto}>Editar</Text>
-            </TouchableOpacity>
+            <Image source={{ uri: item.foto }} style={styles.foto} />
+            <View style={styles.info}>
+              <Text style={styles.nome}>{item.nome} {item.sobrenome}</Text>
+              <Text style={styles.texto}>Posição: {item.posicao}</Text>
+              <Text style={styles.texto}>Idade: {item.idade} • Nota: {item.nota}</Text>
+              <Text style={styles.texto}>Cidade: {item.cidade} • {item.nacionalidade}</Text>
+              <TouchableOpacity
+                style={styles.editarBotao}
+                onPress={() => abrirModal(item)}
+              >
+                <Text style={styles.editarTexto}>Editar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       />
 
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
+      <Modal visible={modalVisible} transparent={true} animationType="slide">
+        <View style={styles.modalFundo}>
           <View style={styles.modal}>
-            <Text style={styles.modalTitle}>Editar Jogador</Text>
-            <TextInput style={styles.input} value={selecionado?.nome} onChangeText={(t) => setSelecionado({ ...selecionado, nome: t })} placeholder="Nome" />
-            <TextInput style={styles.input} value={selecionado?.idade.toString()} onChangeText={(t) => setSelecionado({ ...selecionado, idade: parseInt(t) || 0 })} placeholder="Idade" keyboardType="numeric" />
-            <TextInput style={styles.input} value={selecionado?.posicao} onChangeText={(t) => setSelecionado({ ...selecionado, posicao: t })} placeholder="Posição" />
-            <TextInput style={styles.input} value={selecionado?.cidade} onChangeText={(t) => setSelecionado({ ...selecionado, cidade: t })} placeholder="Cidade" />
-            <TextInput style={styles.input} value={selecionado?.nota.toString()} onChangeText={(t) => setSelecionado({ ...selecionado, nota: parseFloat(t) || 0 })} placeholder="Nota" keyboardType="numeric" />
-            <TouchableOpacity style={styles.botaoSalvar} onPress={salvar}>
-              <Text style={styles.botaoTexto}>Salvar</Text>
+            <Text style={styles.modalTitulo}>Editar Jogador</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Nome"
+              value={jogadorSelecionado?.nome}
+              onChangeText={(text) =>
+                setJogadorSelecionado({ ...jogadorSelecionado, nome: text })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Idade"
+              keyboardType="numeric"
+              value={jogadorSelecionado?.idade.toString()}
+              onChangeText={(text) =>
+                setJogadorSelecionado({ ...jogadorSelecionado, idade: parseInt(text) || 0 })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Posição"
+              value={jogadorSelecionado?.posicao}
+              onChangeText={(text) =>
+                setJogadorSelecionado({ ...jogadorSelecionado, posicao: text })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Cidade"
+              value={jogadorSelecionado?.cidade}
+              onChangeText={(text) =>
+                setJogadorSelecionado({ ...jogadorSelecionado, cidade: text })
+              }
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Nota"
+              keyboardType="numeric"
+              value={jogadorSelecionado?.nota.toString()}
+              onChangeText={(text) =>
+                setJogadorSelecionado({ ...jogadorSelecionado, nota: parseFloat(text) || 0 })
+              }
+            />
+
+            <TouchableOpacity style={styles.botaoSalvar} onPress={salvarAlteracoes}>
+              <Text style={styles.textoBotao}>Salvar</Text>
             </TouchableOpacity>
+
             <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={{ textAlign: 'center', marginTop: 10, color: 'red' }}>Cancelar</Text>
+              <Text style={styles.cancelar}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -77,40 +128,57 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     color: '#FFD700',
-    textAlign: 'center',
-    marginBottom: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  list: {
+    paddingHorizontal: 16,
   },
   card: {
-    backgroundColor: '#111',
-    margin: 10,
-    borderRadius: 10,
+    flexDirection: 'row',
+    backgroundColor: '#1a1a1a',
+    marginBottom: 12,
     padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  foto: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: '#FFD700',
+  },
+  info: {
+    flex: 1,
   },
   nome: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#fff',
-  },
-  info: {
-    color: '#ccc',
-    fontSize: 14,
-  },
-  botao: {
-    marginTop: 5,
-    backgroundColor: '#FFD700',
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
-  },
-  botaoTexto: {
     fontWeight: 'bold',
-    color: '#000',
   },
-  modalContainer: {
+  texto: {
+    fontSize: 14,
+    color: '#ccc',
+    marginTop: 2,
+  },
+  editarBotao: {
+    marginTop: 6,
+    alignSelf: 'flex-start',
+    backgroundColor: '#FFD700',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  editarTexto: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  modalFundo: {
     flex: 1,
     backgroundColor: '#000000aa',
     justifyContent: 'center',
@@ -122,8 +190,8 @@ const styles = StyleSheet.create({
     padding: 20,
     width: width * 0.8,
   },
-  modalTitle: {
-    fontSize: 18,
+  modalTitulo: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 12,
     textAlign: 'center',
@@ -131,13 +199,24 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
-    marginBottom: 10,
+    marginVertical: 6,
     padding: 10,
+    borderRadius: 8,
   },
   botaoSalvar: {
     backgroundColor: '#000',
     padding: 12,
     borderRadius: 8,
+    marginTop: 10,
+  },
+  textoBotao: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  cancelar: {
+    color: 'red',
+    marginTop: 10,
+    textAlign: 'center',
   },
 });

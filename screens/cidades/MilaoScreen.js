@@ -1,4 +1,3 @@
-// MilanoScreen.js
 import React, { useState } from 'react';
 import {
   View,
@@ -7,14 +6,14 @@ import {
   ImageBackground,
   ScrollView,
   TextInput,
-  Button,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function MilanoScreen({ navigation }) {
+export default function MilanoScreen() {
   const [comentario, setComentario] = useState('');
   const [fotoUri, setFotoUri] = useState(null);
   const [curtidas, setCurtidas] = useState(0);
@@ -22,7 +21,7 @@ export default function MilanoScreen({ navigation }) {
   const escolherFoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true
+      allowsEditing: true,
     });
     if (!result.canceled) {
       setFotoUri(result.assets[0].uri);
@@ -32,11 +31,23 @@ export default function MilanoScreen({ navigation }) {
   return (
     <ImageBackground source={require('../../assets/milao.jpg')} style={styles.container} resizeMode="cover">
       <ScrollView contentContainerStyle={styles.overlay}>
-        <Text style={styles.title}>🏛️ Milão</Text>
+        <Text style={styles.title}>🇮🇹 Milão</Text>
         <Text style={styles.subtitle}>Lugares para visitar:</Text>
-        <Text style={styles.text}>• Duomo di Milano</Text>
-        <Text style={styles.text}>• Galleria Vittorio Emanuele II</Text>
-        <Text style={styles.text}>• Castello Sforzesco</Text>
+
+        <TouchableOpacity style={styles.attractionButton}>
+          <Ionicons name="business" size={20} color="#000" style={styles.icon} />
+          <Text style={styles.attractionText}>Duomo di Milano</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.attractionButton}>
+          <Ionicons name="storefront" size={20} color="#000" style={styles.icon} />
+          <Text style={styles.attractionText}>Galleria Vittorio Emanuele II</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.attractionButton}>
+          <Ionicons name="shield-checkmark" size={20} color="#000" style={styles.icon} />
+          <Text style={styles.attractionText}>Castello Sforzesco</Text>
+        </TouchableOpacity>
 
         <MapView
           style={styles.map}
@@ -47,18 +58,9 @@ export default function MilanoScreen({ navigation }) {
             longitudeDelta: 0.05,
           }}
         >
-          <Marker
-            coordinate={{ latitude: 45.4642, longitude: 9.19 }}
-            title="Duomo di Milano"
-          />
-          <Marker
-            coordinate={{ latitude: 45.467, longitude: 9.189 }}
-            title="Galleria Vittorio Emanuele II"
-          />
-          <Marker
-            coordinate={{ latitude: 45.4705, longitude: 9.1795 }}
-            title="Castello Sforzesco"
-          />
+          <Marker coordinate={{ latitude: 45.4642, longitude: 9.19 }} title="Duomo di Milano" />
+          <Marker coordinate={{ latitude: 45.467, longitude: 9.189 }} title="Galleria Vittorio Emanuele II" />
+          <Marker coordinate={{ latitude: 45.4705, longitude: 9.1795 }} title="Castello Sforzesco" />
         </MapView>
 
         <TouchableOpacity style={styles.button} onPress={escolherFoto}>
@@ -72,12 +74,15 @@ export default function MilanoScreen({ navigation }) {
 
         <TextInput
           placeholder="Adicionar comentário"
-          placeholderTextColor="#ccc"
+          placeholderTextColor="#000"
           value={comentario}
           onChangeText={setComentario}
           style={styles.input}
         />
-        <Button title="Enviar comentário" onPress={() => alert('Comentário enviado!')} />
+
+        <TouchableOpacity style={styles.button} onPress={() => alert('Comentário enviado!')}>
+          <Text style={styles.buttonText}>Enviar Comentário</Text>
+        </TouchableOpacity>
       </ScrollView>
     </ImageBackground>
   );
@@ -93,20 +98,32 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#FFD700',
     textShadowColor: '#000',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
   },
   subtitle: {
     fontSize: 20,
-    color: 'white',
+    color: '#000',
     marginVertical: 10,
+    fontWeight: 'bold',
   },
-  text: {
+  attractionButton: {
+    backgroundColor: '#ffffffcc',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  attractionText: {
     fontSize: 16,
-    color: 'white',
-    marginBottom: 4,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  icon: {
+    marginRight: 10,
   },
   map: {
     width: '100%',
